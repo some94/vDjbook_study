@@ -10,3 +10,4 @@
 # PyCharm
 migrations/
 db.sqlite3
+/media
