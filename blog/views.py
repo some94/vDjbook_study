@@ -1,6 +1,7 @@
 from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic import ArchiveIndexView, YearArchiveView, MonthArchiveView
 from django.views.generic import DayArchiveView, TodayArchiveView
+from django.conf import settings
 
 from blog.models import Post
 
@@ -51,4 +52,15 @@ class TaggedObjectLV(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):  # tagging/taggit_post_list.html에 넘겨줄 컨텍스트 변수를 추가하기 위해 오버라이딩
         context = super().get_context_data(**kwargs)  # super를 이용하여 상위 클래스 컨텍스트 변수(변경 전 컨텍스트 변수)를 구함
         context['tagname'] = self.kwargs['tag']  # 추가할 컨텍스트 변수명은 tagname, URL에서 tag 파라미터로 넘어온 값 사용
+        return context
+
+class PostDV(DetailView):
+    model = Post
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['disqus_short'] = f"{settings.DISQUS_SHORTNAME}"
+        context['disqus_id'] = f"post-{self.object.id}-{self.object.slug}"
+        context['disqus_url'] = f"{settings.DISQUS_MY_DOMAIN}{self.object.get_absolute_url()}"
+        context['disqus_title'] = f"{self.object.slug}"
         return context
