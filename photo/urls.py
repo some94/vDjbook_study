@@ -15,7 +15,7 @@ urlpatterns = [
     # Example: /photo/photo/99/
     path('photo/<int:pk>/', views.PhotoDV.as_view(), name='photo_detail'),
 
-# Example: /photo/album/add/
+    # Example: /photo/album/add/
     path('album/add/', views.AlbumPhotoCV.as_view(), name='album_add'),
 
     # Example: /photo/album/change/
